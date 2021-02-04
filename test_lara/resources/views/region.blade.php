@@ -14,7 +14,9 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    You are logged in! this is a gegion
+
+
                 </div>
             </div>
         </div>
