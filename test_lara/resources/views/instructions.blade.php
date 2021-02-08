@@ -6,11 +6,32 @@
         <div class="col-sm-12">
             <h1 class="display-3">Instructions</h1>
 
-            <form action="{{ route('instructions.search')}}" method="post">
+            <script>
+                $(function() {
+                    $('form[name="searchForm"]').submit(function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('instructions.search')}}',
+                            data: $(this).serialize(),
+                            success: function(data) {
+                                $("#msg").html(data.msg);
+
+
+                            }
+                        });
+                    });
+                });
+            </script>
+
+            <form name="searchForm" action="{{ route('instructions.search')}}" method="post">
                 @csrf
                 <input type="text" name="searchString" />
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
+
+            <div id="msg"></div>
+            <br>
 
             @if (Auth::guest())
                 Only registred users can be use this function.
