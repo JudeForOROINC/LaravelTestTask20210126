@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instructions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,8 +23,12 @@ class InstructionsController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-       // dd($user->name);
+        //$sessionVars = Session::all();
+        //dd($sessionVars);
+
+        //$user = Auth::user();
+        //dd($user->name);
+
         $instructions = Instructions::all();
         return view('instructions', compact('instructions'));
     }
@@ -35,6 +40,10 @@ class InstructionsController extends Controller
      */
     public function create()
     {
+//        if (Auth::guest()){
+//            return redirect('/login');
+//        }
+
         return view('instructions.create');
     }
 
@@ -46,24 +55,40 @@ class InstructionsController extends Controller
      */
     public function store(Request $request)
     {
+//        if (Auth::guest()){
+//            return redirect('/login');
+//        }
+
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:4',
             'description' => 'required',
-            'file'=>'required',
+            'file'=>'required|file|mimes:jpg,bmp,png,pdf',
         ]);
+
+        // TODO: move to separate method ====
         $file = $request->file("file");
         //dd($file);
-      //  $res =  Storage::putFile('file', new File($file->getPathname()));
-     //$res = new File($file->getPathname());
+        //  $res =  Storage::putFile('file', new File($file->getPathname()));
+        //$res = new File($file->getPathname());
         $fileName = time().rand().'_.txt';
         $newFileName = Storage::putFileAs('public', new File($file->getPathname()), $fileName);
-       // dd($res);
+        // dd($res);
+        // TODO: move to separate method ====End
+
+//        if ( $user = Auth::user() ) {
+//            $userId = $user->id;
+//        }
+//        else{
+//            $userId = -1;
+//        }
+        $userId = -1;
+
         $instruction = new Instructions([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
             'filename' => $newFileName,
             'status' => self::INSTRUCTION_NEW,
-            'authorId' => 1,
+            'authorId' => $userId,
         ]);
 
         $instruction->save();
@@ -93,8 +118,17 @@ class InstructionsController extends Controller
      */
     public function edit($id)
     {
+        //$user = Auth::user();
+
+//        if( !$user )
+//            return redirect('/login');
+
         $instruction = Instructions::find($id);
-        return view('instructions.edit', compact('instruction'));
+
+        if( $instruction->authorId == $user->id )
+            return view('instructions.edit', compact('instruction'));
+        else
+            return redirect('/instructions');
     }
 
     /**
@@ -106,18 +140,25 @@ class InstructionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
+        //$user = Auth::user();
 
         $instruction = Instructions::find($id);
-        $instruction->name = $request->get('name');
-        $instruction->description = $request->get('description');
-        $instruction->status = $request->get('status');
-        $instruction->save();
 
-        return redirect('/instructions')->with('success', 'Instruction updated!');
+        if( $instruction->authorId == $user->id ){
+            $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+            ]);
+
+            $instruction->name = $request->get('name');
+            $instruction->description = $request->get('description');
+            $instruction->status = $request->get('status');
+            $instruction->save();
+
+            return redirect('/instructions')->with('success', 'Instruction updated!');
+        }
+        else
+            return redirect('/instructions');
     }
 
     /**
@@ -128,9 +169,24 @@ class InstructionsController extends Controller
      */
     public function destroy($id)
     {
-        $instruction = Instructions::find($id);
-        $instruction->delete();
+        $user = Auth::user();
 
-        return redirect('/instructions')->with('success', 'Instruction deleted!');
+        $instruction = Instructions::find($id);
+
+        if( $instruction->authorId == $user->id ){
+            $instruction->delete();
+            return redirect('/instructions')->with('success', 'Instruction deleted!');
+        }
+        else
+            return redirect('/instructions');
     }
+
+    public function search(Request $request){
+        $searchString = $request->get('searchString');
+
+        $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
+
+        return view('instructions', compact('instructions'));
+    }
+
 }
