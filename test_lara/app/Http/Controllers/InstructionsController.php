@@ -30,7 +30,8 @@ class InstructionsController extends Controller
         //dd($user->name);
 
         $instructions = Instructions::all();
-        return view('instructions', compact('instructions'));
+        //return view('instructions', compact('instructions'));
+        return view('layouts.ajaxtable', compact('instructions'));
     }
 
     /**
@@ -181,12 +182,23 @@ class InstructionsController extends Controller
             return redirect('/instructions');
     }
 
+    // return html-view
     public function search(Request $request){
         $searchString = $request->get('searchString');
 
         $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
 
         return view('instructions', compact('instructions'));
+    }
+
+    // return json
+    public function ajaxSearch(Request $request){
+        $searchString = $request->get('searchString');
+
+        $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
+
+        //return response()->json($instructions);
+        return view('layouts.partial', compact('instructions'));
     }
 
 }
