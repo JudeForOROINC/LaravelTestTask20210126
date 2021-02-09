@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instructions;
-use http\Env\Response;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -145,6 +145,7 @@ class InstructionsController extends Controller
         ]);
 
         $instruction = Instructions::find($id);
+
         $instruction->name = $request->get('name');
         $instruction->description = $request->get('description');
         $instruction->status = $request->get('status'); // TODO: admin can update the status.
@@ -182,14 +183,40 @@ class InstructionsController extends Controller
         return view('instructions', compact('instructions'));
     }
 
-    // return json
+    // return html
     public function ajaxSearch(Request $request){
         $searchString = $request->get('searchString');
 
         $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
 
-        //return response()->json($instructions);
         return view('layouts.partial', compact('instructions'));
+    }
+
+    public function fileDownload($id){
+        $instruction = Instructions::find($id);
+
+        if ($instruction) {
+            $pathName = $instruction->filename;
+            if (Storage::exists($pathName)) {
+                return Storage::download($pathName);
+            }
+        }
+        abort(404);
+    }
+
+    public function filePreview($id){
+        $instruction = Instructions::find($id);
+
+        if ($instruction) {
+            $pathName = $instruction->filename;
+            if (Storage::exists($pathName)) {
+                $file = Storage::get($pathName);
+                $type = Storage::mimeType($pathName);
+                $response = Response::make($file, 200)->header("Content-Type", $type);
+                return $response;
+            }
+        }
+        abort(404);
     }
 
 }

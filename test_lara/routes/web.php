@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::resource('/instructions', \App\Http\Controllers\InstructionsController::class);
 Route::post('/instructions/search', [\App\Http\Controllers\InstructionsController::class, 'search'])->name('instructions.search');
 Route::post('/instructions/ajax_search', [\App\Http\Controllers\InstructionsController::class, 'ajaxSearch'])->name('instructions.ajax.search');
+Route::get('/instruction/download/{instruction}', [\App\Http\Controllers\InstructionsController::class, 'fileDownload'])->name('instructions.download');
+Route::get('/instruction/preview/{instruction}', [\App\Http\Controllers\InstructionsController::class, 'filePreview'])->name('instructions.preview');
 
 
 Auth::routes();
