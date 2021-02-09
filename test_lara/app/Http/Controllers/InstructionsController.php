@@ -43,9 +43,9 @@ class InstructionsController extends Controller
      */
     public function create()
     {
-//        if (Auth::guest()){
-//            return redirect('/login');
-//        }
+        if (Auth::guest()){
+            return redirect('/login');
+        }
 
         return view('instructions.create');
     }
