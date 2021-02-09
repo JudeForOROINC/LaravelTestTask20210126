@@ -42,6 +42,10 @@
                     </tr>
                 </tbody>
             </table>
+
+            <pre>
+                {{$fileContent}}
+            </pre>
         </div>
     </div>
 @endsection

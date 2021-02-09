@@ -14,7 +14,7 @@
                         </ul>
                     </div><br/>
                 @endif
-                <form method="post" action="{{ route('instructions.store') }}">
+                <form enctype="multipart/form-data" method="post" action="{{ route('instructions.store') }}">
                     @csrf
 
                     <div class="form-group">
@@ -28,8 +28,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="text">Filename:</label>
-                        <input type="text" class="form-control" name="filename"/>
+                        <label for="file">File:</label>
+                        <input type="file" class="form-control" name="file"/>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add instruction</button>
