@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+// :RoleName,PermissionName
+Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'], function () {
+    Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
+});
+
