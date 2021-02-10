@@ -34,7 +34,7 @@ class SoundController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //todo implement this
     }
 
     /**
