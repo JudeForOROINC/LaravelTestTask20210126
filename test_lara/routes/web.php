@@ -21,6 +21,8 @@ Route::get('/', function () {
 
 Route::resource('/instructions', \App\Http\Controllers\InstructionsController::class);
 Route::post('/instructions/search', [\App\Http\Controllers\InstructionsController::class, 'search'])->name('instructions.search');
+Route::post('/instructions/ajax_search', [\App\Http\Controllers\InstructionsController::class, 'ajaxSearch'])->name('instructions.ajax.search');
+
 
 Auth::routes();
 

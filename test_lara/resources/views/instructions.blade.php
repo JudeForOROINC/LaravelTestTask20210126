@@ -12,12 +12,13 @@
                         e.preventDefault();
                         $.ajax({
                             type: 'POST',
-                            url: '{{ route('instructions.search')}}',
+                            url: '{{ route('instructions.ajax.search')}}',
                             data: $(this).serialize(),
                             success: function(data) {
-                                $("#msg").html(data.msg);
+                                //$("#msg").html(data.msg);
 
-
+                                let section = $('#ajax_section');
+                                section.html(data);
                             }
                         });
                     });
@@ -49,33 +50,34 @@
                     <td colspan=2>Actions</td>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="ajax_section">
+                    @yield('table_instructions')
 
-                @foreach($instructions as $instruction)
-                    <tr>
-                        <td>{{$instruction->id}}</td>
-                        <td>{{$instruction->name}}</td>
-                        <td>{{$instruction->description}}</td>
-                        <td>{{$instruction->status}}</td>
-                        <td>
-                            @if( Auth::user() && Auth::user()->id == $instruction->authorId )
-                                <a href="{{ route('instructions.edit',$instruction->id)}}" class="btn btn-primary">Edit</a>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{ route('instructions.show',$instruction->id)}}" class="btn btn-primary">View</a>
-                        </td>
-                        <td>
-                            @if( Auth::user() && Auth::user()->id == $instruction->authorId )
-                                <form action="{{ route('instructions.destroy', $instruction->id)}}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                </form>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
+{{--                @foreach($instructions as $instruction)--}}
+{{--                    <tr>--}}
+{{--                        <td>{{$instruction->id}}</td>--}}
+{{--                        <td>{{$instruction->name}}</td>--}}
+{{--                        <td>{{$instruction->description}}</td>--}}
+{{--                        <td>{{$instruction->status}}</td>--}}
+{{--                        <td>--}}
+{{--                            @if( Auth::user() && Auth::user()->id == $instruction->authorId )--}}
+{{--                                <a href="{{ route('instructions.edit',$instruction->id)}}" class="btn btn-primary">Edit</a>--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            <a href="{{ route('instructions.show',$instruction->id)}}" class="btn btn-primary">View</a>--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            @if( Auth::user() && Auth::user()->id == $instruction->authorId )--}}
+{{--                                <form action="{{ route('instructions.destroy', $instruction->id)}}" method="post">--}}
+{{--                                    @csrf--}}
+{{--                                    @method('DELETE')--}}
+{{--                                    <button class="btn btn-danger" type="submit">Delete</button>--}}
+{{--                                </form>--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                @endforeach--}}
                 </tbody>
             </table>
             <div>

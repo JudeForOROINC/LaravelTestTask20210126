@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instructions;
+use http\Env\Response;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Http\File;
 
 
 class InstructionsController extends Controller
@@ -30,7 +32,8 @@ class InstructionsController extends Controller
         //dd($user->name);
 
         $instructions = Instructions::all();
-        return view('instructions', compact('instructions'));
+        //return view('instructions', compact('instructions'));
+        return view('layouts.ajaxtable', compact('instructions'));
     }
 
     /**
@@ -40,9 +43,9 @@ class InstructionsController extends Controller
      */
     public function create()
     {
-//        if (Auth::guest()){
-//            return redirect('/login');
-//        }
+        if (Auth::guest()){
+            return redirect('/login');
+        }
 
         return view('instructions.create');
     }
@@ -55,33 +58,27 @@ class InstructionsController extends Controller
      */
     public function store(Request $request)
     {
-//        if (Auth::guest()){
-//            return redirect('/login');
-//        }
+        if (Auth::guest()) {
+            return redirect('login');
+        }
+
 
         $request->validate([
             'name' => 'required|min:4',
             'description' => 'required',
-            'file'=>'required|file|mimes:jpg,bmp,png,pdf',
+            'file' => 'required|mimes:pdf,jpg,png'
         ]);
 
-        // TODO: move to separate method ====
-        $file = $request->file("file");
-        //dd($file);
-        //  $res =  Storage::putFile('file', new File($file->getPathname()));
-        //$res = new File($file->getPathname());
-        $fileName = time().rand().'_.txt';
-        $newFileName = Storage::putFileAs('public', new File($file->getPathname()), $fileName);
-        // dd($res);
-        // TODO: move to separate method ====End
+        $file = $request->file('file');
+        $newFileName = Storage::putFile('public', new File($file->getPathname()));
 
-//        if ( $user = Auth::user() ) {
-//            $userId = $user->id;
-//        }
-//        else{
-//            $userId = -1;
-//        }
-        $userId = -1;
+
+        if ($user = Auth::user()) {
+            $userId = $user->id;
+        } else {
+            $userId = -1;
+        }
+
 
         $instruction = new Instructions([
             'name' => $request->get('name'),
@@ -90,7 +87,6 @@ class InstructionsController extends Controller
             'status' => self::INSTRUCTION_NEW,
             'authorId' => $userId,
         ]);
-
         $instruction->save();
 
         return redirect('/instructions')->with('success', 'Instruction saved!');
@@ -106,7 +102,7 @@ class InstructionsController extends Controller
     {
         $instruction = Instructions::find($id);
         $fileContent = Storage::get($instruction->filename);
-        //dd($fileContent);
+
         return view('instructions.show', compact('instruction', 'fileContent'));
     }
 
@@ -118,17 +114,20 @@ class InstructionsController extends Controller
      */
     public function edit($id)
     {
-        //$user = Auth::user();
+        $user = Auth::user();
 
-//        if( !$user )
-//            return redirect('/login');
+        if ($user === null) {
+            return redirect('/login');
+        }
+
 
         $instruction = Instructions::find($id);
 
-        if( $instruction->authorId == $user->id )
-            return view('instructions.edit', compact('instruction'));
-        else
+        if ($instruction->authorId !== $user->id) {
             return redirect('/instructions');
+        }
+
+        return view('instructions.edit', compact('instruction'));
     }
 
     /**
@@ -140,25 +139,18 @@ class InstructionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //$user = Auth::user();
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
 
         $instruction = Instructions::find($id);
+        $instruction->name = $request->get('name');
+        $instruction->description = $request->get('description');
+        $instruction->status = $request->get('status'); // TODO: admin can update the status.
+        $instruction->save();
 
-        if( $instruction->authorId == $user->id ){
-            $request->validate([
-                'name' => 'required',
-                'description' => 'required',
-            ]);
-
-            $instruction->name = $request->get('name');
-            $instruction->description = $request->get('description');
-            $instruction->status = $request->get('status');
-            $instruction->save();
-
-            return redirect('/instructions')->with('success', 'Instruction updated!');
-        }
-        else
-            return redirect('/instructions');
+        return redirect('/instructions')->with('success', 'Instruction updated!');
     }
 
     /**
@@ -181,12 +173,23 @@ class InstructionsController extends Controller
             return redirect('/instructions');
     }
 
+    // return html-view
     public function search(Request $request){
         $searchString = $request->get('searchString');
 
         $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
 
         return view('instructions', compact('instructions'));
+    }
+
+    // return json
+    public function ajaxSearch(Request $request){
+        $searchString = $request->get('searchString');
+
+        $instructions = Instructions::where('name', 'like', '%'.$searchString.'%')->get();
+
+        //return response()->json($instructions);
+        return view('layouts.partial', compact('instructions'));
     }
 
 }
