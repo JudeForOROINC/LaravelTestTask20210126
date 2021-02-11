@@ -29,12 +29,6 @@ class SoundСomplaintController extends Controller
          ->select('soundсomplaints.*','soundсomplaint_statuses.tittle as tittle','users.name as name')
             ->get();
 
-//        $complaints = SoundСomplaint::join('users', 'users.id', '=', 'SoundComplaint->user_id')
-//            ->select('name', 'description', 'orders.price')
-//            ->get();
-
-//        $complaints = SoundСomplaint::all();
-        //return view('instructions', compact('instructions'));
         return view('complaints', compact('complaints', 'role'));
     }
 
@@ -66,10 +60,6 @@ class SoundСomplaintController extends Controller
             'sound_id' => $request->get('sound_id'),
             'soundсomplaint_statuses_id' => $request->get('soundсomplaint_statuses_id'),
 
-//            'soundсomplaint_statuses_id'=>'1',
-//            'sound_id'=>1,
-//            'User_id'=>1
-
         ]);
         $soundcomplaint->save();
 
@@ -87,13 +77,6 @@ class SoundСomplaintController extends Controller
         $complaint = SoundСomplaint::find($id);
         $userName =DB::table('users')
             ->find($complaint->user_id)->name;
-
-
-
-
-
-
-
 
         return view('complaints.show', compact('complaint', 'userName'));
     }
@@ -118,7 +101,11 @@ class SoundСomplaintController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $complaint = SoundСomplaint::find($id);
+        $complaint->soundсomplaint_statuses_id=2;
+        $complaint->save();
+
+        return redirect('/complaints')->with('success', 'Sound Complaint updated!');
     }
 
     /**

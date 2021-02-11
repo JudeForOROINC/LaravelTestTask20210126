@@ -33,16 +33,25 @@
                         <td>{{$complaint->sound_id}}</td>
                         <td>{{ substr($complaint->description, 0, 20) }} {{ ( strlen($complaint->description) > 20 ? "..." : "")  }}</td>
                         <td>{{$complaint->tittle}}</td>
-                        <td>
+
                                     @if ($role =='Admin')
+                            <td>
                                 <form action="{{ route('complaints.destroy', $complaint->id)}}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-{{--                            <button class="btn btn-danger" type="submit">Delete</button>--}}
-                                    @endif
+                                    <button class="btn btn-danger" type="submit">Reject</button>
                                 </form>
-                        </td>
+                            </td>
+                            <td>
+                                <form action="{{ route('complaints.update', $complaint->id)}}" method="post">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="btn btn-success" type="submit">Accept</button>
+                                </form>
+                            </td>
+                                    @endif
+
+
                         <td>
                             <a href="{{ route('complaints.show',$complaint->id)}}" class="btn btn-primary">View</a>
                         </td>
