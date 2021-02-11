@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SoundСomplaint;
 
 class SoundСomplaintController extends Controller
 {
@@ -13,7 +14,9 @@ class SoundСomplaintController extends Controller
      */
     public function index()
     {
-        //
+        $complaints = SoundСomplaint::all();
+        //return view('instructions', compact('instructions'));
+        return view('complaints', compact('complaints'));
     }
 
     /**
