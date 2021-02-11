@@ -25,10 +25,10 @@ Route::get('/', function () {
 });
 
 // :RoleName,PermissionName
-Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'], function () {
+Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Approve instruction'], function () {
     Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
+    Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
 });
 
 
 
-Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
