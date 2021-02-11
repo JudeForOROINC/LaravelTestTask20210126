@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSoundsTable extends Migration
+class AddTableSounds extends Migration
 {
     /**
      * Run the migrations.
