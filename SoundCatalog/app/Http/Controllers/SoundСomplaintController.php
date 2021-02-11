@@ -16,6 +16,12 @@ class SoundСomplaintController extends Controller
      */
     public function index()
     {
+        $userId =Auth::user()->id;
+        $roleUser =DB::table('role_user')
+            ->find($userId);
+        if(!$roleUser)$role =' ';
+            else
+            { $role =DB::table('roles')->find($roleUser->role_id)->name;}
 
         $complaints = DB::table('soundсomplaints')
             ->join('users', 'soundсomplaints.user_id'  ,'=','users.id')
@@ -29,7 +35,7 @@ class SoundСomplaintController extends Controller
 
 //        $complaints = SoundСomplaint::all();
         //return view('instructions', compact('instructions'));
-        return view('complaints', compact('complaints'));
+        return view('complaints', compact('complaints', 'role'));
     }
 
     /**
@@ -78,7 +84,18 @@ class SoundСomplaintController extends Controller
      */
     public function show($id)
     {
-        //
+        $complaint = SoundСomplaint::find($id);
+        $userName =DB::table('users')
+            ->find($complaint->user_id)->name;
+
+
+
+
+
+
+
+
+        return view('complaints.show', compact('complaint', 'userName'));
     }
 
     /**
@@ -112,6 +129,10 @@ class SoundСomplaintController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $complaint = SoundСomplaint::find($id);
+
+        $complaint->delete();
+
+        return redirect('/complaints')->with('success', 'Sound Category deleted!');
     }
 }

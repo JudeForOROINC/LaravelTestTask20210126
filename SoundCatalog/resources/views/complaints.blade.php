@@ -7,11 +7,11 @@
             <h1 class="display-3">Complaints</h1>
             <br>
 
-{{--            @if (Auth::guest())--}}
-{{--                Only registred users can be use this function.--}}
-{{--            @else--}}
+            @if (Auth::guest())
+                Only registred users can be use this function.
+            @else
                 <a href="{{ route('complaints.create') }}" class="mb-3 btn btn-primary">Add complaint</a>
-{{--            @endif--}}
+            @endif
 
             <table class="table table-striped">
                 <thead>
@@ -25,31 +25,28 @@
                 </tr>
                 </thead>
                 <tbody >
-{{--                {{dd($complaints)}}--}}
+{{--                {{dd($role)}}--}}
                 @foreach($complaints as $complaint)
                     <tr>
                         <td>{{$complaint->id}}</td>
                         <td>{{$complaint->name}}</td>
                         <td>{{$complaint->sound_id}}</td>
-                        <td>{{$complaint->description}}</td>
+                        <td>{{ substr($complaint->description, 0, 20) }} {{ ( strlen($complaint->description) > 20 ? "..." : "")  }}</td>
                         <td>{{$complaint->tittle}}</td>
-{{--                        <td>--}}
+                        <td>
+                                    @if ($role =='Admin')
+                                <form action="{{ route('complaints.destroy', $complaint->id)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+{{--                            <button class="btn btn-danger" type="submit">Delete</button>--}}
+                                    @endif
+                                </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('complaints.show',$complaint->id)}}" class="btn btn-primary">View</a>
+                        </td>
 
-{{--                                <a href="{{ route('instructions.edit',$complaint->id)}}" class="btn btn-primary">Edit</a>--}}
-
-{{--                        </td>--}}
-{{--                        <td>--}}
-{{--                            <a href="{{ route('instructions.show',$complaint->id)}}" class="btn btn-primary">View</a>--}}
-{{--                        </td>--}}
-{{--                        <td>--}}
-
-{{--                                <form action="{{ route('instructions.destroy', $complaint->id)}}" method="post">--}}
-{{--                                    @csrf--}}
-{{--                                    @method('DELETE')--}}
-{{--                                    <button class="btn btn-danger" type="submit">Delete</button>--}}
-{{--                                </form>--}}
-
-{{--                        </td>--}}
                     </tr>
                 @endforeach
 
