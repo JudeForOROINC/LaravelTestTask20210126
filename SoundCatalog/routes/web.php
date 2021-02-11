@@ -29,3 +29,6 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'],
     Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
 });
 
+
+
+Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
