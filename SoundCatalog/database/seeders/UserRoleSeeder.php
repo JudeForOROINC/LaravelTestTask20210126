@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleSeeder extends Seeder
 {
@@ -15,9 +16,33 @@ class UserRoleSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::where('email', '=', 'admin@adm.com')->firstOrFail();
-        $adminRole = Role::where('name', '=', 'Admin')->firstOrFail();
+        $user = DB::table('users')
+            ->where('email', '=', 'admin@adm.com')->first();
+        if ($user) {
+            $findUserRole = DB::table('role_user')
+                ->where('user_id', '=', $user->id)->first();
 
-        $admin->roles()->attach($adminRole);
+            if (!$findUserRole) {
+                $admin = User::where('email', '=', 'admin@adm.com')->firstOrFail();
+                $adminRole = Role::where('name', '=', 'Admin')->firstOrFail();
+
+                $admin->roles()->attach($adminRole);
+            }
+        }
+        $user = DB::table('users')
+            ->where('email', '=', 'vasyaxhd5@gmail.com')->first();
+        if ($user) {
+            $findUserRole = DB::table('role_user')
+                ->where('user_id', '=', $user->id)->first();
+
+            if (!$findUserRole) {
+                $admin = User::where('email', '=', 'vasyaxhd5@gmail.com')->firstOrFail();
+                $adminRole = Role::where('name', '=', 'Admin')->firstOrFail();
+
+                $admin->roles()->attach($adminRole);
+            }
+
+        }
     }
+
 }

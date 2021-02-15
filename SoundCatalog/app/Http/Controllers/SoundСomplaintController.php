@@ -21,8 +21,10 @@ class SoundСomplaintController extends Controller
         }
         else {
             $userId = Auth::user()->id;
+           // dd($userId);
             $roleUser = DB::table('role_user')
-                ->find($userId);
+                ->where('user_id', '=', $userId)->first();
+          //  dd($roleUser);
             if (!$roleUser) $role = ' ';
             else {
                 $role = DB::table('roles')->find($roleUser->role_id)->name;
@@ -108,7 +110,10 @@ class SoundСomplaintController extends Controller
     public function update(Request $request, $id)
     {
         $complaint = SoundСomplaint::find($id);
-        $complaint->soundсomplaint_statuses_id=2;
+        $statusId = DB::table('soundсomplaint_statuses')
+            ->where('tittle', '=', 'processed')->first()->id;
+        //dd($statusId );
+        $complaint->soundсomplaint_statuses_id=$statusId;
         $complaint->save();
 
         return redirect('/complaints')->with('success', 'Sound Complaint updated!');
