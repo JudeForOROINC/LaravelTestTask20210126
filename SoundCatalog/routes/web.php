@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Ap
 
 Route::resource('/sound', \App\Http\Controllers\SoundController::class);
 
+
+
+Route::resource('users', UserController::class);
