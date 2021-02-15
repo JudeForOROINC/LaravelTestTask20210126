@@ -35,6 +35,15 @@
                     @endauth
                 </div>
             @endif
+                <div>
+                    <a href="{{ route('complaints.index') }}" class="text-sm text-gray-700 underline">Complaints</a>
+                </div>
+
+            <ul>
+                <li><a href="/login">login</a></li>
+                <li><a href="/home">home</a></li>
+                <li><a href="/admin-home">admin-home</a></li>
+            </ul>
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
