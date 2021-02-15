@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody >
-{{--                {{dd($role)}}--}}
+{{--                {{dd($complaints)}}--}}
                 @foreach($complaints as $complaint)
                     <tr>
                         <td>{{$complaint->id}}</td>
