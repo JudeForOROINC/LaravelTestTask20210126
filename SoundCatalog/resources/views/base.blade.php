@@ -6,9 +6,6 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css"/>
 
-    {{-- Сменить на нормальное подключение--}}
-    <script src = "//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
 </head>
 <body>
     <div class="container">
