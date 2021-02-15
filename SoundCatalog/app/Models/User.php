@@ -93,7 +93,7 @@ class User extends Authenticatable
         if ($permissions === 0) return false;
 
 
-        foreach ($permission->roles as $role) {
+        foreach ($permissions->roles as $role) {
             if ($this->roles->contains($role)) {
                 return true;
             }

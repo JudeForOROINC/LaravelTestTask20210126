@@ -23,6 +23,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
 
 // :RoleName,PermissionName
 Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'], function () {
