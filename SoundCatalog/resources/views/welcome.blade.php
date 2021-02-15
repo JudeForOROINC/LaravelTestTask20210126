@@ -35,6 +35,9 @@
                     @endauth
                 </div>
             @endif
+                <div>
+                    <a href="{{ route('complaints.index') }}" class="text-sm text-gray-700 underline">Complaints</a>
+                </div>
 
             <ul>
                 <li><a href="/login">login</a></li>
