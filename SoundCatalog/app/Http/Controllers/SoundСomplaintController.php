@@ -22,7 +22,9 @@ class SoundСomplaintController extends Controller
         else {
             $userId = Auth::user()->id;
             $roleUser = DB::table('role_user')
-                ->find($userId);
+                ->where('user_id', '=', $userId)
+                ->first();
+
             if (!$roleUser) $role = ' ';
             else {
                 $role = DB::table('roles')->find($roleUser->role_id)->name;
