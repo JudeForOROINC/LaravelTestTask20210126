@@ -16,20 +16,26 @@ class SoundСomplaintController extends Controller
      */
     public function index()
     {
-        $userId =Auth::user()->id;
-        $roleUser =DB::table('role_user')
-            ->find($userId);
-        if(!$roleUser)$role =' ';
-            else
-            { $role =DB::table('roles')->find($roleUser->role_id)->name;}
+        if(Auth::guest()) {
+        abort(403);
+        }
+        else {
+            $userId = Auth::user()->id;
+            $roleUser = DB::table('role_user')
+                ->find($userId);
+            if (!$roleUser) $role = ' ';
+            else {
+                $role = DB::table('roles')->find($roleUser->role_id)->name;
+            }
 
-        $complaints = DB::table('soundсomplaints')
-            ->join('users', 'soundсomplaints.user_id'  ,'=','users.id')
-            ->join('soundсomplaint_statuses', 'soundсomplaints.soundсomplaint_statuses_id'  ,'=','soundсomplaint_statuses.id')
-         ->select('soundсomplaints.*','soundсomplaint_statuses.tittle as tittle','users.name as name')
-            ->get();
+            $complaints = DB::table('soundсomplaints')
+                ->join('users', 'soundсomplaints.user_id', '=', 'users.id')
+                ->join('soundсomplaint_statuses', 'soundсomplaints.soundсomplaint_statuses_id', '=', 'soundсomplaint_statuses.id')
+                ->select('soundсomplaints.*', 'soundсomplaint_statuses.tittle as tittle', 'users.name as name')
+                ->get();
 
-        return view('complaints', compact('complaints', 'role'));
+            return view('complaints', compact('complaints', 'role'));
+        }
     }
 
     /**
