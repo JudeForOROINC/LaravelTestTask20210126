@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../../../:\OpenServer\OpenServer\domains\gittest\LaravelTestTask20210126\SoundCatalog\.idea/dataSources/
+/../../../../../../../:\open_server\OpenServer\domains\instructions-jude\SoundCatalog\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
