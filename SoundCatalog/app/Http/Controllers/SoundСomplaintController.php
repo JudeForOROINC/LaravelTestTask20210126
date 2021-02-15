@@ -17,7 +17,8 @@ class SoundСomplaintController extends Controller
     public function index()
     {
         if(Auth::guest()) {
-        abort(403);
+            return redirect('/login');
+       // abort(403);
         }
         else {
             $userId = Auth::user()->id;
@@ -39,6 +40,27 @@ class SoundСomplaintController extends Controller
             return view('complaints', compact('complaints', 'role'));
         }
     }
+
+    public function soundComplaints($id)
+    {
+        if(Auth::guest()) {
+            return redirect('/login');
+            // abort(403);
+        }
+            $complaints = DB::table('soundсomplaints')
+                ->join('users', 'soundсomplaints.user_id', '=', 'users.id')
+                ->join('soundсomplaint_statuses', 'soundсomplaints.soundсomplaint_statuses_id', '=', 'soundсomplaint_statuses.id')
+                ->where('sound_id', '=', $id)
+                ->select('soundсomplaints.description as description','soundсomplaints.created_at as created_at','soundсomplaints.updated_at as updated_at',
+                    'soundсomplaint_statuses.tittle as tittle', 'users.name as name')
+                ->get();
+
+            return view('complaints', compact('complaints'));
+
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
