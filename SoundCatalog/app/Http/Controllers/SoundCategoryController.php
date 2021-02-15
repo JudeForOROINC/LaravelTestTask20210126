@@ -46,7 +46,7 @@ class SoundCategoryController extends Controller
         ]);
         $soundcategory->save();
 
-        return redirect('/soundcategory')->with('success', 'ound Category saved!');
+        return redirect('/soundcategory')->with('success', 'Sound Category saved!');
     }
 
     /**
@@ -93,7 +93,7 @@ class SoundCategoryController extends Controller
         $soundcategory->title = $request->get('title');
         $soundcategory->save();
 
-        return redirect('/soundcategory')->with('success', 'ound Category updated!');
+        return redirect('/soundcategory')->with('success', 'Sound Category updated!');
     }
 
     /**
