@@ -1,0 +1,27 @@
+
+
+
+
+
+/home
+
+
+---------- for admin -----------
+
+/complaints		-	Sound Complaints
+
+/admin-home		-	Admin Panel
+
+/soundcategory	-	Sound Categories
+
+/users			-	Users
+
+---------- for all users -----------
+
+/sound 			-	Sounds
+
+/register		- 	Register
+
+/login			-	Login
+
+
