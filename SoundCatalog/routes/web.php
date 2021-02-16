@@ -21,9 +21,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\SoundController::class, 'index']);
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//Route::get('/complaints', [App\Http\Controllers\SoundСomplaintController::class, 'index'])->name('complaints_main');
+Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
 
 // :RoleName,PermissionName
 Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Approve instruction'], function () {
