@@ -52,12 +52,8 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'],
 });
 
 
-
-
-
-
-
 Route::resource('/sound', \App\Http\Controllers\SoundController::class);
+Route::post('/sound/search_ajax', [\App\Http\Controllers\SoundController::class, 'searchAjax'])->name('sound.search.ajax');
 
 
 

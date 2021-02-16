@@ -18,9 +18,9 @@ class SoundController extends Controller
      */
     public function index()
     {
-        $sound = Sound::all();
+        $sounds = Sound::all();
 
-        return view('sound.list', compact('sound'));
+        return view('sound.index', compact('sounds'));
     }
 
     /**
@@ -86,8 +86,9 @@ class SoundController extends Controller
     {
         $sound = Sound::find($id);
 
-        $userName = DB::table('users')->find($sound->author_id)->name;
-        //$fileContent = Storage::get($sound->filename);
+        $author = DB::table('users')->find($sound->author_id);
+
+        $userName = !empty($author->name) ? $author->name : 'Unknown';
 
         $fileLink = '/storage/'. basename($sound->filename);
 
@@ -167,4 +168,18 @@ class SoundController extends Controller
 //        else
 //            return redirect('/sound');
     }
+
+
+    public function searchAjax(Request $request){
+        $searchString = $request->get('searchString');
+
+        $sounds = Sound::where('title', 'like', '%'. $searchString .'%')->get();
+
+        return view('sound.parts._items', compact('sounds'));
+    }
+
+
+
+
+
 }
