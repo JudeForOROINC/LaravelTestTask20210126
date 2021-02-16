@@ -7,11 +7,9 @@
             <h1 class="display-3">Complaints</h1>
             <br>
 
-            @if (Auth::guest())
-                Only registred users can be use this function.
-            @else
-                <a href="{{ route('complaints.create') }}" class="mb-3 btn btn-primary">Add complaint</a>
-            @endif
+{{--           @if ($role !='Admin')--}}
+{{--         --}}
+{{--            @endif--}}
 
             <table class="table table-striped">
                 <thead>

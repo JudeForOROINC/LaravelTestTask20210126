@@ -24,13 +24,25 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
 
 // :RoleName,PermissionName
 Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Approve instruction'], function () {
     Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
     Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
 });
+
+
+Route::get('/complaints/soundComplaints/{id}', function($id){
+    $sff = new \App\Http\Controllers\SoundСomplaintController();
+    return $sff->soundComplaints($id);
+})->name('complaints.soundComplaints');
+
+Route::get('/complaints/create/{soundId}', function($soundId){
+    $sff = new \App\Http\Controllers\SoundСomplaintController();
+    return $sff->create($soundId);
+})->name('complaints.create');
+
+Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
 
 
 Route::resource('/sound', \App\Http\Controllers\SoundController::class);

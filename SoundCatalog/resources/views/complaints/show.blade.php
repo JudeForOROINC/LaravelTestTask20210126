@@ -37,7 +37,8 @@
                 </tbody>
             </table>
             <div>{{$complaint->description}}</div>
-            <a href="{{ route('complaints.index')}}" class="btn btn-primary">Back to list</a>
+
+            <a href=" {{ redirect()->back()->getTargetUrl() }}" class="btn btn-primary">Back to list</a>
         </div>
     </div>
 @endsection

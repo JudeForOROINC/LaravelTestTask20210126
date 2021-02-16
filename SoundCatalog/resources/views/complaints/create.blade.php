@@ -21,7 +21,7 @@
                         <label for="name">Description:</label>
                         <input type="text" class="form-control" name="description"/>
 {{--                        <input type="hidden" class="form-control" value="1" name="user_id"/>--}}
-                        <input type="hidden" class="form-control" value="1" name="sound_id"/>
+                            <input type="hidden" class="form-control" value="{{$soundId}}" name="soundId"/>
                         <input type="hidden" class="form-control" value="1" name="soundсomplaint_statuses_id"/>
                     </div>
 
