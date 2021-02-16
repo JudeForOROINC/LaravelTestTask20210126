@@ -53,6 +53,10 @@
                         @else
 {{--                            //need in check for admin or logged user--}}
                             <li>
+                                <a class="nav-item nav-link"
+                                   href="{{ url('/') }}">Sounds</a>
+                            </li>
+                            <li>
                                 <a class="nav-item nav-link{{ substr(Route::currentRouteName(),0,10)=='admin-home'?' active':'' }}"
                                    href="{{ url('/admin-home') }}">Admin Panel</a>
                             </li>
