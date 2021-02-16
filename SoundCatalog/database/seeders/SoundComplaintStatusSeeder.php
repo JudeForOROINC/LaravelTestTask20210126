@@ -19,7 +19,7 @@ class SoundComplaintStatusSeeder extends Seeder
             ->where('tittle', '=', 'pending')->first();
         if(!$findStatus) {
             $pending = new SoundComplaintStatus();
-            $pending->tittle = '$pending';
+            $pending->tittle = 'pending';
             $pending->save();
         }
         $findStatus = DB::table('soundсomplaint_statuses')
