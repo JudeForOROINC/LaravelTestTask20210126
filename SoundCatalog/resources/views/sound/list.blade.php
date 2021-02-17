@@ -27,6 +27,9 @@
                             <a href="{{ route('sound.show',$sound_item->id)}}" class="btn btn-primary">View</a>
                         </td>
                         <td>
+                            <a href="{{ route('complaints.soundComplaints',$sound_item->id)}}" class="btn btn-primary">Complaints</a>
+                        </td>
+                        <td>
 {{--                            @if( Auth::user() && Auth::user()->id == $sound_item->authorId )--}}
                                 <form action="{{ route('sound.destroy', $sound_item->id)}}" method="post">
                                     @csrf

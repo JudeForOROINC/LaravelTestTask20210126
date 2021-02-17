@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="row">
-        <div class="col-12">
+        <div class="col-6 offset-3">
             <h1 class="display-3">Add a Sound</h1>
             <div>
                 @if ($errors->any())
@@ -17,7 +17,7 @@
 
                 <form enctype="multipart/form-data" method="post" action="{{ route('sound.store') }}">
                     @csrf
-
+                    <input type="hidden" name="MAX_FILE_SIZE" value="10485760">
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input type="text" class="form-control" name="title"/>
@@ -26,6 +26,7 @@
                     <div class="form-group">
                         <label for="file">File:</label>
                         <input type="file" class="form-control" name="file"/>
+                        <small class="form-text text-muted">Maximum file size 10 MB</small>
                     </div>
 
 {{--                    <div class="form-group">--}}

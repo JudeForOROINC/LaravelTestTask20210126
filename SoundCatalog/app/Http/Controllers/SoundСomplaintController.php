@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SoundСomplaint;
+use App\Models\Sound;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +18,8 @@ class SoundСomplaintController extends Controller
     public function index()
     {
         if(Auth::guest()) {
-        abort(403);
+            return redirect('/login');
+       // abort(403);
         }
         else {
             $userId = Auth::user()->id;
@@ -29,7 +31,7 @@ class SoundСomplaintController extends Controller
             else {
                 $role = DB::table('roles')->find($roleUser->role_id)->name;
             }
-
+            if($role!='Admin') return redirect('/sound');
             $complaints = DB::table('soundсomplaints')
                 ->join('users', 'soundсomplaints.user_id', '=', 'users.id')
                 ->join('soundсomplaint_statuses', 'soundсomplaints.soundсomplaint_statuses_id', '=', 'soundсomplaint_statuses.id')
@@ -40,14 +42,38 @@ class SoundСomplaintController extends Controller
         }
     }
 
+    public function soundComplaints($id)
+    {
+      //  dd($id);
+        if(Auth::guest()) {
+            return redirect('/login');
+            // abort(403);
+        }
+        else {
+            //  dd($id);
+            $complaints = DB::table('soundсomplaints')
+                ->join('users', 'soundсomplaints.user_id', '=', 'users.id')
+                ->join('soundсomplaint_statuses', 'soundсomplaints.soundсomplaint_statuses_id', '=', 'soundсomplaint_statuses.id')
+                ->where('sound_id', '=', $id)->where('tittle', '=', 'processed')
+                ->select('soundсomplaints.sound_id as sound_id','soundсomplaints.id as id','soundсomplaints.description as description', 'soundсomplaints.created_at as created_at', 'soundсomplaints.updated_at as updated_at',
+                    'soundсomplaint_statuses.tittle as tittle', 'users.name as name')
+                ->get();
+            $sound =Sound::find($id)->firstOrFail()->title;
+           // dd($sound);
+            return view('complaints.complaintsForSound', compact('complaints', 'id', 'sound'));
+        }
+       // dd('ffsdfs');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($soundId)
     {
-        return view('complaints.create');
+      //  dd($soundId);
+        return view('complaints.create', compact('soundId'));
     }
 
     /**
@@ -65,13 +91,14 @@ class SoundСomplaintController extends Controller
         $soundcomplaint = new SoundСomplaint([
             'description' => $request->get('description'),
             'user_id' => $userId,
-            'sound_id' => $request->get('sound_id'),
+            'sound_id' => $request->get('soundId'),
             'soundсomplaint_statuses_id' => $request->get('soundсomplaint_statuses_id'),
 
         ]);
+        $SoundId =$soundcomplaint->sound_id;
         $soundcomplaint->save();
-
-        return redirect('/complaints')->with('success', 'Sound Complaint saved!');
+        return redirect('complaints/soundComplaints'.'/'.$SoundId)->with('success', 'Sound Complaint saved!');
+     //   return redirect('/complaints')->with('success', 'Sound Complaint saved!');
     }
 
     /**
@@ -110,7 +137,10 @@ class SoundСomplaintController extends Controller
     public function update(Request $request, $id)
     {
         $complaint = SoundСomplaint::find($id);
-        $complaint->soundсomplaint_statuses_id=2;
+        $statusId = DB::table('soundсomplaint_statuses')
+            ->where('tittle', '=', 'processed')->first()->id;
+        //dd($statusId );
+        $complaint->soundсomplaint_statuses_id=$statusId;
         $complaint->save();
 
         return redirect('/complaints')->with('success', 'Sound Complaint updated!');
