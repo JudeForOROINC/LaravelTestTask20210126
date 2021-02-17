@@ -6,7 +6,14 @@
         <div class="row">
             <div class="col-12">
                  <table class="table table-striped" style=" table-layout: fixed; word-wrap: break-word; ">
-                     <tbody>
+{{--                     <thead>--}}
+{{--                     <tr>--}}
+{{--                         <td>ID</td>--}}
+{{--                         <td>Title</td>--}}
+{{--                         <td>Actions</td>--}}
+{{--                     </tr>--}}
+{{--                     </thead>--}}
+{{--                     <tbody>--}}
                      @foreach($item['sounds'] as $sound)
                                  <tr class>
                                      <td>{{ $sound->id }}</td>
