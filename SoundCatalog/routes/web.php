@@ -52,8 +52,12 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'],
 });
 
 
-Route::resource('/sound', \App\Http\Controllers\SoundController::class);
+Route::get('/sound/group_by_categories', [App\Http\Controllers\SoundController::class, 'soundsGroupByCategories'])->name('sound.groupbycategory');
+Route::post('/sound/search_ajax_sounds_group_by_category', [\App\Http\Controllers\SoundController::class, 'searchAjaxGroupByCategories'])->name('sound.search.ajax.groupbycategory');
 Route::post('/sound/search_ajax', [\App\Http\Controllers\SoundController::class, 'searchAjax'])->name('sound.search.ajax');
+// почле всех связанных по смыслу get/post роутов!!!
+Route::resource('/sound', \App\Http\Controllers\SoundController::class);
+
 
 
 

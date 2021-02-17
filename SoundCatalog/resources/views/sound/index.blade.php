@@ -9,10 +9,31 @@
                 <div class="col">
                     <a href="{{ route('sound.create') }}" class="mb-3 btn btn-primary">Add Sound</a>
                 </div>
+
                 <div class="col">
                     <div class="float-right">
-                        <script>
-                            $(function() {
+                        <form id="searchForm" name="searchForm" action="{{ route('sound.search.ajax') }}" method="post">
+                            @csrf
+                            <input type="text" name="searchString" placeholder="sound name" />
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </form>
+
+                        <script type="text/javascript">
+                            // $(function() {
+                            //     $('form[name="searchForm"]').submit(function(e){
+                            //         e.preventDefault();
+                            //
+                            //         $.ajax({
+                            //             type: 'POST',
+                            //             url: $(this).attr('action'),
+                            //             data: $(this).serialize(),
+                            //             success: function(data) {
+                            //                 $('#table_sounds tbody').html('').html(data);
+                            //             }
+                            //         });
+                            //     });
+                            // });
+                            $(document).ready(function () {
                                 $('form[name="searchForm"]').submit(function(e){
                                     e.preventDefault();
 
@@ -21,18 +42,12 @@
                                         url: $(this).attr('action'),
                                         data: $(this).serialize(),
                                         success: function(data) {
-                                            $('#table_sounds tbody').html('').html(data);
+                                            $('#table_sounds tbody').empty().html(data);
                                         }
                                     });
                                 });
                             });
                         </script>
-
-                        <form name="searchForm" action="{{ route('sound.search.ajax') }}" method="post">
-                            @csrf
-                            <input type="text" name="searchString" />
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -50,10 +65,9 @@
                     @include('sound.parts._items')
                 </tbody>
             </table>
-            <div>
 
-            </div>
         </div>
+    </div>
 
 
 @endsection

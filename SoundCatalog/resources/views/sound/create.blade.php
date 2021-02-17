@@ -29,6 +29,13 @@
                         <small class="form-text text-muted">Maximum file size 10 MB</small>
                     </div>
 
+                    <div class="form-group">
+                        <select class="form-control" name="category_id" id="category_id">
+                        @foreach($soundCategories as $soundCategory)
+                            <option value="{{ $soundCategory->id }}">{{ $soundCategory->title }}</option>
+                        @endforeach
+                        </select>
+                    </div>
 {{--                    <div class="form-group">--}}
 {{--                        <select name="soundstatusid" id="soundstatusid">--}}
 

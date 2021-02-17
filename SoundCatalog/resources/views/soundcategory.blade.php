@@ -22,13 +22,15 @@
                         <td>{{$soundcategory_item->id}}</td>
                         <td>{{$soundcategory_item->title}}</td>
                         <td>
-                            <a href="{{ route('soundcategory.edit',$soundcategory_item->id)}}" class="btn btn-primary">Edit</a>
+                            @if( Auth::user() && (Auth::user()->id == $soundcategory_item->authorId || Auth::user()->hasRole('Admin') ) )
+                                <a href="{{ route('soundcategory.edit',$soundcategory_item->id)}}" class="btn btn-primary">Edit</a>
+                            @endif
                         </td>
                         <td>
                             <a href="{{ route('soundcategory.show',$soundcategory_item->id)}}" class="btn btn-primary">View</a>
                         </td>
                         <td>
-                            @if( Auth::user() && Auth::user()->id == $soundcategory_item->authorId )
+                            @if( Auth::user() && (Auth::user()->id == $soundcategory_item->authorId || Auth::user()->hasRole('Admin') ) )
                                 <form action="{{ route('soundcategory.destroy', $soundcategory_item->id)}}" method="post">
                                     @csrf
                                     @method('DELETE')
