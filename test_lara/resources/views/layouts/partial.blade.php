@@ -4,7 +4,7 @@
     <td>{{$instruction->name}}</td>
     <td>{{$instruction->description}}</td>
     <td>{{$instruction->status}}</td>
-    <td>
+    <td>a
         @if( Auth::user() && Auth::user()->id == $instruction->authorId )
         <a href="{{ route('instructions.edit',$instruction->id)}}" class="btn btn-primary">Edit</a>
         @endif

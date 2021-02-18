@@ -9,8 +9,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- Сменить на нормальное подключение--}}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +19,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
 </head>
 <body>
     <div id="app">
@@ -55,6 +60,10 @@
                             <li>
                                 <a class="nav-item nav-link"
                                    href="{{ url('/') }}">Sounds</a>
+                            </li>
+                            <li>
+                                <a class="nav-item nav-link"
+                                   href="{{ route('sound.groupbycategory') }}" title="Sounds Grouped By Categories">Sounds By Categories</a>
                             </li>
                             <li>
                                 <a class="nav-item nav-link{{ substr(Route::currentRouteName(),0,10)=='admin-home'?' active':'' }}"
