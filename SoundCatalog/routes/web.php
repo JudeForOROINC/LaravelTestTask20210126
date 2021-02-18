@@ -36,9 +36,6 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Ap
 
 
 Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::patch('/complaints/{complaint}', [\App\Http\Controllers\SoundСomplaintController::class, 'update'])->middleware(
     \App\Http\Middleware\CheckRole::class . ':Admin'
