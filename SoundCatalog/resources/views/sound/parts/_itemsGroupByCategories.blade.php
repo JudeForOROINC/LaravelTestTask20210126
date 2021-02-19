@@ -15,13 +15,13 @@
 {{--                     </thead>--}}
 {{--                     <tbody>--}}
                      @foreach($item['sounds'] as $sound)
-                                 <tr class>
-                                     <td>{{ $sound->id }}</td>
-                                     <td>{{ $sound->title }}</td>
-                                     <td>
-                                         <a href="{{ route('sound.show', $sound->id) }}" class="btn btn-primary btn-sm" target="_blank">View</a>
-                                     </td>
-                                 </tr>
+                        <tr class>
+                            <td>{{ $sound->id }}</td>
+                            <td>{{ $sound->title }}</td>
+                            <td>
+                                <a href="{{ route('sound.show', $sound->id) }}" class="btn btn-primary btn-sm" target="_blank">View</a>
+                            </td>
+                        </tr>
                      @endforeach
                      </tbody>
                  </table>

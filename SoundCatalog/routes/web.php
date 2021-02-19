@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+//use App\Helpers;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +20,9 @@ use App\Http\Controllers\UserController;
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', [App\Http\Controllers\SoundController::class, 'index']);
+//Route::get('/sound', [App\Http\Controllers\SoundController::class, 'index'])->name('main');
 //Route::get('/', function () {
 //    return view('welcome');
 //});
@@ -36,7 +37,7 @@ Route::get('/complaints/soundComplaints/{id}', function($id){
 Route::get('/complaints/create/{soundId}', function($soundId){
     $sff = new \App\Http\Controllers\SoundСomplaintController();
     return $sff->create($soundId);
-})->name('complaints.create');
+})->name('complaints.createBySoundId');
 
 
 Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);

@@ -91,6 +91,9 @@ class SoundController extends Controller
     {
         $sound = Sound::find($id);
 
+        if(empty($sound))
+            abort(404);
+
         $author = DB::table('users')->find($sound->author_id);
 
         $userName = !empty($author->name) ? $author->name : 'Unknown';
@@ -110,21 +113,13 @@ class SoundController extends Controller
     {
         $user = Auth::user();
 
-        $user = array();
-
-
-
-        if ($user === null) {
+        if ($user === null)
             return redirect('/login');
-        }
-
-
 
         $sound = Sound::find($id);
 
-//        if ($sound->authorid !== $user->id) {
-//            return redirect('/sound');
-//        }
+        if(empty($sound))
+            abort(404);
 
         return view('sound.edit', compact('sound'));
     }
@@ -191,36 +186,7 @@ class SoundController extends Controller
     // index GroupByCategories
     public function soundsGroupByCategories()
     {
-//        рабочий вариант, но неправильный
-//        $soundCategories = SoundCategory::all();
-//        $sounds = Sound::all();
-//        foreach ( $soundCategories as $soundCategory ) {
-//            foreach ($sounds as $sound ) {
-//
-//            }
-//        }
-
-        // SELECT s.id, s.title, s.filename, s.author_id, s.soundstatus_id, s.created_at, s.updated_at, sc.title as category_name
-        // FROM sounds as s
-        //	join soundcategory as sc on s.category_id = sc.id
-
-        // одномерный массив
-        $results = DB::table('sounds as s')
-            ->join('soundcategory as sc','s.category_id','=','sc.id')
-            ->select([
-                's.id as id',
-                's.id',
-                's.title',
-                's.filename',
-                's.author_id',
-                's.category_id',
-                's.soundstatus_id',
-                's.created_at',
-                's.updated_at',
-                'sc.title as category_name'
-            ])
-            ->orderBy('sc.id', 'asc')
-            ->get();
+        $results = Sound::getListGroupByCategories();
 
         // получаем уже двумерный массив без лишних проховов по sounds
         $items = self::get2dArraySoundsGroupByCategory($results);
@@ -233,26 +199,7 @@ class SoundController extends Controller
     {
         $searchString = $request->get('searchString');
 
-        //$sounds = Sound::where('title', 'like', '%'. $searchString .'%')->get();
-
-        // одномерный массив
-        $results = DB::table('sounds as s')
-            ->join('soundcategory as sc','s.category_id','=','sc.id')
-            ->where('sc.title', 'like', '%'. $searchString .'%')
-            ->select([
-                's.id as id',
-                's.id',
-                's.title',
-                's.filename',
-                's.author_id',
-                's.category_id',
-                's.soundstatus_id',
-                's.created_at',
-                's.updated_at',
-                'sc.title as category_name'
-            ])
-            ->orderBy('sc.id', 'asc')
-            ->get();
+        $results = Sound::getListGroupByCategories($searchString);
 
         // получаем уже двумерный массив без лишних проховов по sounds
         $items = self::get2dArraySoundsGroupByCategory($results);
