@@ -59,6 +59,9 @@ class SoundCategoryController extends Controller
     {
         $soundcategory = SoundCategory::find($id);
 
+        if(empty($soundcategory))
+            abort(404);
+
         return view('soundcategory.show', compact('soundcategory'));
     }
 
