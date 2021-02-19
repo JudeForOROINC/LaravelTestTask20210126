@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+//use App\Helpers;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +20,12 @@ use App\Http\Controllers\UserController;
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// :RoleName,PermissionName
-Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Approve instruction'], function () {
-    Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
-    Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
-});
+//Route::get('/sound', [App\Http\Controllers\SoundController::class, 'index'])->name('main');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 
 
@@ -42,7 +38,8 @@ Route::patch('/complaints/{complaint}', [\App\Http\Controllers\SoundСomplaintCo
 )->name('complaints.update');
 
 
-Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'], function () {
+// :RoleName,PermissionName
+Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin,Approve instruction'], function () {
     Route::resource('/admin-home', \App\Http\Controllers\AdminHomeController::class);
     Route::resource('/soundcategory', \App\Http\Controllers\SoundCategoryController::class);
 });
@@ -53,15 +50,10 @@ Route::group(['middleware' => \App\Http\Middleware\CheckRole::class . ':Admin'],
 //    return $sff->soundComplaints($id);
 //})->name('complaints.soundComplaints');
 Route::get('/complaints/create/{soundId}', [App\Http\Controllers\SoundСomplaintController::class, 'create'])->name('complaints.createBySoundId');
-Route::get('//complaints/soundComplaints/{id}', [App\Http\Controllers\SoundСomplaintController::class, 'soundComplaints'])->name('complaints.soundComplaints');
-
-//Route::get('/complaints/create/{soundId}', function($soundId){
-//    $sff = new \App\Http\Controllers\SoundСomplaintController();
-//    return $sff->create($soundId);
-//})->name('complaints.create');
-
+Route::get('/complaints/soundComplaints/{id}', [App\Http\Controllers\SoundСomplaintController::class, 'soundComplaints'])->name('complaints.soundComplaints');
 
 Route::resource('/complaints', \App\Http\Controllers\SoundСomplaintController::class);
+
 
 Route::get('/sound/group_by_categories', [App\Http\Controllers\SoundController::class, 'soundsGroupByCategories'])->name('sound.groupbycategory');
 Route::post('/sound/search_ajax_sounds_group_by_category', [\App\Http\Controllers\SoundController::class, 'searchAjaxGroupByCategories'])->name('sound.search.ajax.groupbycategory');

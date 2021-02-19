@@ -110,6 +110,10 @@ class SoundСomplaintController extends Controller
     public function show($id)
     {
         $complaint = SoundСomplaint::find($id);
+
+        if(empty($complaint))
+            abort(404);
+
         $userName =DB::table('users')
             ->find($complaint->user_id)->name;
 
